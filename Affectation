@@ -1,0 +1,45 @@
+#Input_TP_OC2
+#Liste dictionnaire
+
+vols = [{'vol': 'Dubai', 'Type_avion': 737, 'ARR': 01.20, 'DEP': 01.50},
+         {'vol': 'Beirut', 'Type_avion': 300, 'ARR': 01.30, 'DEP': 02.15},
+         {'vol': 'Trabzon', 'Type_avion': 300, 'ARR': 02.00, 'DEP': 02.45},
+         {'vol': 'Vienna', 'Type_avion': 747, 'ARR': 01.40, 'DEP': 02.30},
+         {'vol': 'Antalya', 'Type_avion': 300, 'ARR': 02.30, 'DEP': 03.00},
+         {'vol': 'Cairo', 'Type_avion': 737, 'ARR': 02.00, 'DEP': 03.05}]
+
+gates = [{'gate': 'A', 'Type_avion_compatible': [300, 737],'gk':-1},
+         {'gate': 'B', 'Type_avion_compatible': [300, 737],'gk':-1},
+         {'gate': 'C', 'Type_avion_compatible': [300, 737],'gk':-1},
+         {'gate': 'D', 'Type_avion_compatible': [300, 737, 747],'gk':-1}]
+
+
+#Trier les vols par ordre croissant des depart.
+
+def tri_DEP(d):
+    return (d['DEP'])
+vols_triés = sorted(vols, key=tri_DEP)
+
+
+#Boucle sur tous les vols pour les affecter aux portes.
+
+for vol in vols_triés:
+    gate_dispo = False
+    for gate in gates:
+        if vol['Type_avion'] in gate['Type_avion_compatible'] and gate['gk'] < vol['ARR']:
+            #La porte est compatible avec le type d'avion et disponible pour le vol arrivé
+            gate_dispo = True
+            vol['gate'] = gate['gate']
+            gate['gk'] = vol['DEP']
+            break
+
+#Affichage
+def afficher_resultats(vols):
+        for vol in vols:
+            print( f"Vol {vol['vol']} ({vol['Type_avion']}), arrivée à {vol['ARR']} : porte {vol['gate']}, gk = {vol['DEP']}")
+
+        print("\nGK pour chaque porte :")
+        for gate in gates:
+            print(f"Porte {gate['gate']} : {gate['gk']}")
+
+afficher_resultats(vols_triés)
